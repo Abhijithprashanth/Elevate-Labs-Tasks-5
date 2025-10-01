@@ -19,42 +19,102 @@ Below are the key steps taken in this process:
 download wireshark here
 - https://www.wireshark.org/download.html
 
-![](https://github.com/Abhijithprashanth/Elevate-Labs-Tasks-4/blob/main/Screenshot%202025-09-28%20192003.png)
+![](https://github.com/Abhijithprashanth/Elevate-Labs-Tasks-5/blob/main/Download%20wireshark.png)
 
-### 2. List current firewall rules.
+### 2. Start capturing on your active network interface.
 
-sudo ufw status numbered
-
-
-![](https://github.com/Abhijithprashanth/Elevate-Labs-Tasks-4/blob/main/Screenshot%202025-09-28%20192320.png)
+Captured the packets in wireshark
 
 
+![]([https://github.com/Abhijithprashanth/Elevate-Labs-Tasks-4/blob/main/Screenshot%202025-09-28%20192320.png](https://github.com/Abhijithprashanth/Elevate-Labs-Tasks-5/blob/main/Capturing%20Packets.png))
 
 
-### 3. Add a rule to block inbound traffic on a specific port (e.g., 23 for Telnet).
-
-sudo ufw deny proto tcp from any to any port 23 comment 'Block-Telnet'
 
 
-![](https://github.com/Abhijithprashanth/Elevate-Labs-Tasks-4/blob/main/Screenshot%202025-09-28%20192445.png)
+### 3. Browse a website or ping a server to generate traffic.
+
+
+### 4. Stop capture after a minute.
+
  
 
-### 4. Add rule to alow SSH (port 22) if on Linux
+### 5. Filter captured packets by protocol (e.g., HTTP, DNS, TCP)
 
-- sudo ufw allow 22/tcp
-- sudo ufw allow ssh
-- sudo ufw enable
-- sudo ufw status numbered
+In the filter panel we can Type protocol name
 
-![](https://github.com/Abhijithprashanth/Elevate-Labs-Tasks-4/blob/main/Screenshot%202025-09-28%20212146.png)
 
-### 5. Remove the test block rule to restore original state
+![](https://github.com/Abhijithprashanth/Elevate-Labs-Tasks-5/blob/main/http.png)
+HTTP
+![](https://github.com/Abhijithprashanth/Elevate-Labs-Tasks-5/blob/main/dns.png)
+DNS
+![](https://github.com/Abhijithprashanth/Elevate-Labs-Tasks-5/blob/main/tcp.png)
+TCP
 
-sudo ufw delete 1
-sudo ufw delete 2
+### 5. Identify at least 3 different protocols in the capture.
 
-![](https://github.com/Abhijithprashanth/Elevate-Labs-Tasks-4/blob/main/Screenshot%202025-09-28%20214200.png)
+
+DNS: Queries to resolve domain names (A, AAAA records).
+
+HTTP: GET requests to websites, status codes (200 OK).
+
+TCP: Three-way handshake (SYN, SYN/ACK, ACK).
+
+ICMP: Ping echo request/reply.
+
+
+### 6. Export the capture as a .pcap file.
+
+File → Save As → capture.pcapng
+
+### 7. Summarize your findings and packet details.
+
+Protocols Observed
+
+- TCP → Used for reliable communication between hosts. Observed SYN, ACK, RST flags showing connection establishment and termination.
+
+- HTTP → Application-layer traffic, showing web requests/responses over TCP port 80.
+
+- TLSv1.2 → Encrypted traffic over HTTPS (port 443), securing web sessions.
+
+- DNS → Queries and responses resolving domains like gstatic.com and google.com.
+
+- ICMP (Ping) → Echo requests and replies confirming network connectivity.
+  
+
+Example Packet Details : 
+
+
+- TCP Handshake:
+
+SYN → SYN/ACK → ACK observed between 192.168.0.113 and external IPs.
+
+Sequence and acknowledgment numbers incremented as expected.
+
+- HTTP Traffic:
+
+Large continuation packets (1494 bytes) containing HTTP payload.
+
+ACKs confirming reliable delivery.
+
+- TLS Traffic:
+
+Encrypted application data exchanged with Google servers (142.250.x.x).
+
+TLS handshake and subsequent encrypted communication noted.
+
+
+
+Observations
+
+TCP ensures reliable delivery, retransmitting when needed.
+
+HTTP traffic is human-readable (GET, POST), while HTTPS appears encrypted under TLS.
+
+DNS is crucial for resolving hostnames before connections.
+
+RST (Reset) packets indicate some closed/denied connections.
+
 
 ### 5. Conclusion
 
-successfully configured and tested firewall rules to allow or block traffic, gaining hands-on experience in managing network traffic and understanding how firewalls filter connections to enhance system security.
+The Wireshark capture successfully demonstrated multiple protocols (TCP, HTTP, TLS, DNS, ICMP) in action. I observed how connections are established and terminated, how DNS queries resolve domains, and how HTTP vs HTTPS differ (plaintext vs encrypted). This provided hands-on packet analysis skills and protocol awareness, fulfilling the task objective.
